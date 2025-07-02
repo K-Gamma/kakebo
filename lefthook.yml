@@ -1,0 +1,21 @@
+# EXAMPLE USAGE:
+#
+#   Refer for explanation to following link:
+#   https://lefthook.dev/configuration/
+#
+pre-push:
+  parallel: true
+  jobs:
+    - name: packages audit
+      run: pnpm audit --audit-level high
+    - name: type check
+      run: pnpm type-check
+
+pre-commit:
+  parallel: true
+  jobs:
+    - name: lint
+      glob: "*.{ts,tsx}"
+      run: pnpm eslint --fix {staged_files} && git add {staged_files}
+    - name: format
+      run: pnpm prettier --write {staged_files} && git add {staged_files}
